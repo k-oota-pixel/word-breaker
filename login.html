@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ログイン｜WORD BREAKER</title>
+<style>
+:root{--ink:#193d38;--green:#246a57;--muted:#6d7c75;--line:#dce5da;--pale:#f4f8f4;--error:#9b453b;--ok:#2f6f50}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#f6f5ef;color:var(--ink);font:14px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;place-items:center;padding:22px}
+button,input{font:inherit}.shell{width:min(520px,100%)}.brand{font-size:11px;letter-spacing:.15em;font-weight:900;color:#55776e;margin:0 0 8px}.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 12px 36px #193d3810}h1{font-size:30px;line-height:1.25;margin:0 0 7px}.lead{margin:0 0 23px;color:var(--muted);font-size:13px}.btn{width:100%;border:1px solid #cfdbd2;background:#fff;color:var(--ink);border-radius:12px;padding:12px 14px;font-weight:850;cursor:pointer}.btn:hover{background:#f7faf7}.btn.primary{background:var(--green);border-color:var(--green);color:#fff}.btn:disabled{opacity:.55;cursor:wait}.google{display:flex;align-items:center;justify-content:center;gap:9px}.gmark{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;border:1px solid #d9e0da;font-weight:900;font-size:12px;background:#fff}.divider{display:flex;align-items:center;gap:12px;color:#8b9892;font-size:11px;margin:20px 0}.divider:before,.divider:after{content:"";height:1px;background:#e2e9e3;flex:1}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#f1f5f1;border-radius:12px;padding:4px;margin-bottom:16px}.tab{border:0;background:transparent;color:#718078;border-radius:9px;padding:8px;font-weight:850;cursor:pointer}.tab.active{background:#fff;color:var(--ink);box-shadow:0 2px 8px #193d380d}.form{display:grid;gap:10px}.field{display:grid;gap:5px}.label{font-size:11px;font-weight:850}.input{width:100%;border:1px solid #cbd8cf;border-radius:12px;padding:12px 13px;background:#fff;color:var(--ink);outline:none}.input:focus{border-color:#6a9a87;box-shadow:0 0 0 3px #70a28c1c}.hint{font-size:10.5px;color:#7a8982}.mode-note{font-size:10.5px;color:#74827c;margin-top:2px}.status{display:none;margin-top:15px;padding:11px 12px;border-radius:12px;background:#f0f5f1;color:#5c7067;font-size:12px;white-space:pre-wrap}.status.show{display:block}.status.ok{background:#eaf6ee;color:var(--ok)}.status.error{background:#fff0ed;color:var(--error)}.text-btn{appearance:none;border:0;background:none;padding:0;color:#55786d;text-decoration:underline;font-size:11px;cursor:pointer}.help{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:13px;flex-wrap:wrap}.signed{display:none;margin-top:17px;padding:14px;border-radius:14px;background:#edf7f0;border:1px solid #d7eadc}.signed.show{display:block}.signed strong{display:block;font-size:13px}.signed span{display:block;color:#66766f;font-size:11px;overflow-wrap:anywhere;margin-top:2px}.signed-actions{display:flex;gap:8px;margin-top:11px}.signed-actions .btn{padding:9px 11px;font-size:11px}.foot{font-size:10px;text-align:center;color:#84918b;margin-top:12px}.back{display:inline-block;margin-bottom:12px;text-decoration:none;color:#61786f;font-size:11px;font-weight:800}.hidden{display:none!important}@media(max-width:560px){body{padding:12px}.card{padding:21px 17px;border-radius:18px}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <a class="back" href="./">← WORD BREAKERへ戻る</a>
+  <section class="card">
+    <div class="brand">WORD BREAKER</div>
+    <h1>ログイン</h1>
+    <p class="lead">Google、またはメールアドレスとパスワードで利用できます。</p>
+
+    <button id="googleBtn" class="btn google" type="button"><span class="gmark">G</span>Googleでログイン</button>
+
+    <div class="divider">または</div>
+
+    <div class="tabs" role="tablist" aria-label="ログインと新規登録">
+      <button id="loginTab" class="tab active" type="button" role="tab" aria-selected="true">ログイン</button>
+      <button id="registerTab" class="tab" type="button" role="tab" aria-selected="false">新規登録</button>
+    </div>
+
+    <form id="emailForm" class="form">
+      <div class="field">
+        <label class="label" for="email">メールアドレス</label>
+        <input id="email" class="input" type="email" inputmode="email" autocomplete="email" placeholder="example@icloud.com" required>
+      </div>
+      <div class="field">
+        <label class="label" for="password">パスワード</label>
+        <input id="password" class="input" type="password" autocomplete="current-password" minlength="6" placeholder="6文字以上" required>
+      </div>
+      <div id="confirmField" class="field hidden">
+        <label class="label" for="confirmPassword">パスワード（確認）</label>
+        <input id="confirmPassword" class="input" type="password" autocomplete="new-password" minlength="6" placeholder="同じパスワードをもう一度">
+      </div>
+      <button id="emailSubmit" class="btn primary" type="submit">メールアドレスでログイン</button>
+      <div id="modeNote" class="mode-note">一度ログインすれば、この端末では基本的にログイン状態が保たれます。</div>
+    </form>
+
+    <div class="help">
+      <button id="resetBtn" class="text-btn" type="button">パスワードを忘れた方はこちら</button>
+      <button id="modeSwitch" class="text-btn" type="button">初めての方はこちら</button>
+    </div>
+
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+
+    <div id="signed" class="signed">
+      <strong>ログイン中</strong><span id="signedEmail"></span>
+      <div class="signed-actions"><button id="continueBtn" class="btn primary" type="button">続ける</button><button id="logoutBtn" class="btn" type="button">ログアウト</button></div>
+    </div>
+  </section>
+  <div class="foot">ログイン情報はFirebase Authenticationで管理されます。</div>
+</main>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+import {
+  getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged,
+  setPersistence,browserLocalPersistence,signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyAllLjPcGhygMSEIORXhKZOaDjYvpSJ4EQ",
+  authDomain:"eiken-retry.firebaseapp.com",
+  projectId:"eiken-retry",
+  storageBucket:"eiken-retry.firebasestorage.app",
+  messagingSenderId:"231308672297",
+  appId:"1:231308672297:web:5e8b8ede3a0246c2318b38"
+};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),provider=new GoogleAuthProvider();
+auth.languageCode='ja';
+provider.setCustomParameters({prompt:'select_account'});
+await setPersistence(auth,browserLocalPersistence);
+
+const $=id=>document.getElementById(id);
+const status=$('status'),emailInput=$('email'),passwordInput=$('password'),confirmInput=$('confirmPassword');
+const emailSubmit=$('emailSubmit'),googleBtn=$('googleBtn');
+let mode='login';
+
+function safeReturn(raw){
+  try{
+    const u=new URL(raw||'./',location.href);
+    if(u.origin!==location.origin)return new URL('./',location.href).href;
+    if(u.pathname.endsWith('/login.html'))return new URL('./',location.href).href;
+    return u.href;
+  }catch{return new URL('./',location.href).href;}
+}
+const params=new URLSearchParams(location.search);
+const storedReturn=localStorage.getItem('englishPlayroomLoginReturn')||'';
+const returnUrl=safeReturn(params.get('return')||storedReturn||'./');
+localStorage.setItem('englishPlayroomLoginReturn',returnUrl);
+
+function setStatus(text,kind=''){status.textContent=text;status.className='status show'+(kind?' '+kind:'');}
+function clearStatus(){status.textContent='';status.className='status';}
+function errText(e){
+  const c=e?.code||'';
+  if(c==='auth/invalid-email')return 'メールアドレスの形式を確認してください。';
+  if(c==='auth/email-already-in-use')return 'このメールアドレスはすでに登録されています。「ログイン」に切り替えてください。';
+  if(c==='auth/weak-password')return 'パスワードが短すぎます。6文字以上で設定してください。';
+  if(c==='auth/invalid-credential'||c==='auth/wrong-password'||c==='auth/user-not-found')return 'メールアドレスまたはパスワードが違います。';
+  if(c==='auth/too-many-requests')return '試行回数が多すぎます。少し待ってから再度お試しください。';
+  if(c==='auth/network-request-failed')return '通信できませんでした。ネット接続を確認してください。';
+  if(c==='auth/operation-not-allowed')return '先生へ：Firebase Authenticationの「メール / パスワード」を有効にしてください。';
+  if(c==='auth/account-exists-with-different-credential')return 'このメールアドレスは別のログイン方法で登録されています。Googleログインもお試しください。';
+  return '処理に失敗しました。もう一度お試しください。';
+}
+function setMode(next){
+  mode=next==='register'?'register':'login';clearStatus();
+  const register=mode==='register';
+  $('loginTab').classList.toggle('active',!register);$('registerTab').classList.toggle('active',register);
+  $('loginTab').setAttribute('aria-selected',String(!register));$('registerTab').setAttribute('aria-selected',String(register));
+  $('confirmField').classList.toggle('hidden',!register);confirmInput.required=register;
+  passwordInput.autocomplete=register?'new-password':'current-password';
+  emailSubmit.textContent=register?'このメールアドレスで新規登録':'メールアドレスでログイン';
+  $('modeNote').textContent=register?'確認メールは不要です。登録すると、そのまま利用を開始できます。':'一度ログインすれば、この端末では基本的にログイン状態が保たれます。';
+  $('modeSwitch').textContent=register?'すでに登録済みの方はこちら':'初めての方はこちら';
+  $('resetBtn').classList.toggle('hidden',register);
+}
+function busy(on){emailSubmit.disabled=on;googleBtn.disabled=on;$('loginTab').disabled=on;$('registerTab').disabled=on;}
+
+$('loginTab').addEventListener('click',()=>setMode('login'));
+$('registerTab').addEventListener('click',()=>setMode('register'));
+$('modeSwitch').addEventListener('click',()=>setMode(mode==='login'?'register':'login'));
+
+$('emailForm').addEventListener('submit',async e=>{
+  e.preventDefault();clearStatus();
+  const email=emailInput.value.trim(),password=passwordInput.value;
+  if(!email||!password)return;
+  if(mode==='register'&&password!==confirmInput.value){setStatus('確認用パスワードが一致していません。','error');return;}
+  busy(true);setStatus(mode==='register'?'アカウントを作成しています…':'ログインしています…');
+  try{
+    if(mode==='register'){
+      await createUserWithEmailAndPassword(auth,email,password);
+      setStatus('登録ありがとうございます！ そのまま利用を開始できます。','ok');
+    }else{
+      await signInWithEmailAndPassword(auth,email,password);
+      setStatus('ログインできました。','ok');
+    }
+    setTimeout(()=>location.href=returnUrl,550);
+  }catch(e2){console.error(e2);setStatus(errText(e2),'error');}
+  finally{busy(false);}
+});
+
+$('resetBtn').addEventListener('click',async()=>{
+  clearStatus();const email=emailInput.value.trim();
+  if(!email){setStatus('パスワードを再設定するメールアドレスを上の欄に入力してください。','error');emailInput.focus();return;}
+  busy(true);setStatus('パスワード再設定メールを送信しています…');
+  try{await sendPasswordResetEmail(auth,email);setStatus(`${email} にパスワード再設定メールを送りました。迷惑メールフォルダもご確認ください。`,'ok');}
+  catch(e){console.error(e);setStatus(errText(e),'error');}
+  finally{busy(false);}
+});
+
+googleBtn.addEventListener('click',async()=>{
+  busy(true);setStatus('Googleログインを開いています…');
+  try{await signInWithPopup(auth,provider);setStatus('ログインできました。','ok');setTimeout(()=>location.href=returnUrl,350);}
+  catch(e){console.error(e);if(e?.code!=='auth/popup-closed-by-user')setStatus(errText(e),'error');else clearStatus();}
+  finally{busy(false);}
+});
+
+$('continueBtn').addEventListener('click',()=>location.href=returnUrl);
+$('logoutBtn').addEventListener('click',async()=>{await signOut(auth);setStatus('ログアウトしました。','ok');});
+
+onAuthStateChanged(auth,user=>{
+  $('signed').classList.toggle('show',!!user);
+  $('signedEmail').textContent=user?.email||user?.displayName||'';
+});
+
+if(params.get('mode')==='signIn'||params.has('oobCode')){
+  setStatus('以前のメールリンク方式は終了しました。メールアドレスとパスワードでログインしてください。','error');
+}
+</script>
+</body>
+</html>
