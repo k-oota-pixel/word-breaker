@@ -26,7 +26,7 @@ const root=path.resolve(__dirname,'..');
   await page.locator('.course:enabled').first().click();
   await page.locator('#answer:enabled').waitFor();
   assert.equal(await page.locator('.world-record-card:not([hidden])').count(),1);
-  assert.equal(await page.locator('.world-record-card:visible').getAttribute('data-course'),'junior1');
+  assert.equal(await page.locator('.world-record-card:not([hidden])').getAttribute('data-course'),'junior1');
   await page.locator('#answer').fill('猫');await page.locator('#answer-form').evaluate(f=>f.requestSubmit());assert.equal(await page.locator('#distance-label').textContent(),'cat：猫');
   await page.clock.runFor(700);assert.equal(await page.locator('#score').textContent(),'1');
   await page.locator('#quit').click();await page.locator('#result').waitFor({state:'visible'});
