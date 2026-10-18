@@ -29,8 +29,8 @@ export async function runTransaction(db,fn){let staged;const result=await fn({ge
  await p.locator('#demo').click();await p.locator('#answer:enabled').waitFor();
  await p.locator('#answer').fill('ぜんぜん違う');await p.locator('#answer-form').evaluate(f=>f.requestSubmit());assert.equal(await p.locator('#life').textContent(),'♥ ♥ ');
  await p.clock.runFor(12020);assert.equal(await p.locator('#word').evaluate(el=>el.classList.contains('danger')),true);
- await p.clock.runFor(5000);assert.equal(await p.locator('#life').textContent(),'♥ ');
- await p.clock.runFor(700);assert.equal(await p.locator('#feedback-result').textContent(),'時間切れ · LIFE −1');assert.equal(await p.locator('#feedback-user').textContent(),'ぜんぜん違う');assert.equal(await p.locator('#distance-label').textContent(),'important：重要な');
+ await p.clock.runFor(5000);assert.equal(await p.locator('#life').textContent(),'♥ ');assert.equal(await p.locator('#distance-label').textContent(),'important：重要な');
+ await p.clock.runFor(700);assert.equal(await p.locator('#feedback-result').textContent(),'時間切れ · LIFE −1');assert.equal(await p.locator('#feedback-user').textContent(),'ぜんぜん違う');
  await p.clock.runFor(17020+700);await p.locator('#result').waitFor({state:'visible'});assert.equal(await p.locator('#result-coins').textContent(),'0');
  await p.locator('#retry').click();assert.equal(await p.locator('#score').textContent(),'0');assert.deepEqual(guest.errors,[]);
  const signed=await setup(false),q=signed.page;
