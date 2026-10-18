@@ -6,7 +6,7 @@ const authMock=`const auth={currentUser:window.guest?null:{uid:'tester'}};export
 const firestoreMock=`export const getFirestore=()=>({}),doc=(db,...p)=>p.join('/'),serverTimestamp=()=>0;
 export async function runTransaction(db,fn){let staged;const result=await fn({get:async()=>({exists:()=>true,data:()=>structuredClone(window.wallet)}),set:(ref,payload,options)=>{if(window.failSave)throw Error('offline');staged=structuredClone(window.wallet);for(const field of options.mergeFields){const parts=field.split('.');let dest=staged,src=payload;for(const part of parts.slice(0,-1)){dest=dest[part]??={};src=src[part];}dest[parts.at(-1)]=structuredClone(src[parts.at(-1)]);}}});if(staged)window.wallet=staged;return result;}`;
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH||'C:/Program Files/Google/Chrome/Application/chrome.exe'});
+ const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});
  try {
  const {DEMO}=await import('../word-breaker-data.js');
  const courses=JSON.parse(fs.readFileSync(path.join(root,'monstudy_vocab_master.json'),'utf8'));
