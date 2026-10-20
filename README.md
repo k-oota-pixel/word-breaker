@@ -4,7 +4,7 @@ Independent GitHub Pages game for the Monstudy learning projects.
 
 - Live site: https://k-oota-pixel.github.io/word-breaker/
 - Main learning portal: https://k-oota-pixel.github.io/english-playroom/
-- Release: ver.1.5
+- Release: ver.1.6
 
 The app is a static site and needs no build step. Its Firebase connection uses the existing `eiken-retry` project and continues to save coins and course records under `users/{uid}/apps/english-playroom`, so records remain visible in the main portal dashboard. Authentication is shared on `k-oota-pixel.github.io`.
 
@@ -26,6 +26,13 @@ in every applicable course, negated/unrelated extensions of all registered
 meanings, and confusable pairs such as give/receive, lend/borrow and useful/useless.
 Negative definitions such as useless → 役立たない remain valid.
 Versioned module and master-data URLs refresh the vocabulary on release.
+
+## Version 1.6
+
+When the last life is lost, the result screen keeps the final word, all model
+answers, and the last submitted answer (or 未回答) visible until the learner
+chooses to retry or change course. This review is also available on mobile and
+in the demo. Manually ending a later run does not show a stale review.
 
 ## Play and records
 

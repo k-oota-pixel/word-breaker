@@ -135,6 +135,11 @@ function finish(abandoned=false) {
   $('answer').disabled=true;$('submit').disabled=true;composing=false;
   $('result-heading').textContent=abandoned?'今回の記録':course==='demo'?'操作体験の結果':'おつかれさま！';
   $('result-score').textContent=round.score;$('result-combo').textContent=round.bestCombo;$('result-coins').textContent=savedCoins;
+  // Keep the final timed-out question readable after the play section is hidden.
+  $('final-review').hidden=round.life!==0;
+  $('final-word').textContent=round.life===0?round.current.word:'';
+  $('final-user').textContent=round.life===0?(round.lastAnswer||'（未回答）'):'';
+  $('final-answers').textContent=round.life===0?round.current.answers.join(' / '):'';
   $('record').hidden=course==='demo'||!(round.score>(oldBest.score||0)||round.bestCombo>(oldBest.combo||0));
   if(course==='demo') $('save-status').textContent='操作体験です。コイン・自己ベストは保存されません。';
   else if(!playerUid) $('save-status').textContent='ゲスト記録はこのブラウザに保存。コイン獲得にはプレイ前にログインしてください。';

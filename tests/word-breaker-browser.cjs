@@ -36,6 +36,33 @@ export async function runTransaction(db,fn){let staged;const result=await fn({ge
    assert.equal(await page.locator('#score').textContent(),'0');
    await page.locator('#answer').fill(answer);await page.locator('#answer-form').evaluate(f=>f.requestSubmit());
    assert.equal(await page.locator('#score').textContent(),'1');
+   if(word==='give'){
+     await page.setViewportSize({width:390,height:844});
+     await page.emulateMedia({reducedMotion:'reduce'});
+     await page.reload();
+     await page.locator('#account').filter({hasText:'ログイン中'}).waitFor();
+     await page.locator('.course').first().click();await page.locator('#answer:enabled').waitFor();
+   }else await page.clock.runFor(700);
+   await page.clock.runFor(17020+700);
+   const lastAnswer='<img src=x onerror=alert(1)>';
+   await page.locator('#answer').fill(lastAnswer);await page.locator('#answer-form').evaluate(f=>f.requestSubmit());
+   await page.clock.runFor(17020+700);
+   await page.locator('#result').waitFor({state:'visible'});
+   assert.equal(await page.locator('#final-review').isVisible(),true);
+   assert.equal(await page.locator('#final-word').textContent(),word);
+   assert.equal(await page.locator('#final-answers').textContent(),entry.answers.join(' / '));
+   assert.equal(await page.locator('#final-user').textContent(),lastAnswer);
+   assert.equal(await page.locator('#final-review img').count(),0);
+   await page.clock.runFor(30000);
+   assert.equal(await page.locator('#final-review').isVisible(),true);
+   await page.locator('#final-answers').scrollIntoViewIfNeeded();
+   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+   await page.waitForFunction(()=>!document.getElementById('retry').disabled);
+   await page.locator('#retry').click();await page.locator('#answer:enabled').waitFor();
+   await page.locator('#quit').click();
+   await page.locator('#result').waitFor({state:'visible'});
+   assert.equal(await page.locator('#final-review').isVisible(),false);
+   assert.equal(await page.locator('#final-answers').textContent(),'');
    assert.deepEqual(check.errors,[]);await check.context.close();
  }
  const guest=await setup(true,true),p=guest.page;
@@ -46,7 +73,12 @@ export async function runTransaction(db,fn){let staged;const result=await fn({ge
  await p.clock.runFor(12020);assert.equal(await p.locator('#word').evaluate(el=>el.classList.contains('danger')),true);
  await p.clock.runFor(5000);assert.equal(await p.locator('#life').textContent(),'♥ ');assert.equal(await p.locator('#distance-label').textContent(),`${demoWord}：${demoEntry.answers[0]}`);
  await p.clock.runFor(700);assert.equal(await p.locator('#feedback-result').textContent(),'時間切れ · LIFE −1');assert.equal(await p.locator('#feedback-user').textContent(),'ぜんぜん違う');
+ const finalDemoWord=await p.locator('#word').textContent();
  await p.clock.runFor(17020+700);await p.locator('#result').waitFor({state:'visible'});assert.equal(await p.locator('#result-coins').textContent(),'0');
+ assert.equal(await p.locator('#final-review').isVisible(),true);
+ assert.equal(await p.locator('#final-word').textContent(),finalDemoWord);
+ assert.equal(await p.locator('#final-answers').textContent(),DEMO.find(e=>e.word===finalDemoWord).answers.join(' / '));
+ assert.equal(await p.locator('#final-user').textContent(),'（未回答）');
  await p.locator('#retry').click();assert.equal(await p.locator('#score').textContent(),'0');assert.deepEqual(guest.errors,[]);
  const signed=await setup(false),q=signed.page;
  await q.locator('#account').filter({hasText:'ログイン中'}).waitFor();await q.locator('.course').first().click();await q.locator('#answer:enabled').waitFor();

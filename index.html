@@ -4,13 +4,13 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
   <title>WORD BREAKER</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./word-breaker.css?v=1.5">
+  <link rel="stylesheet" href="./word-breaker.css?v=1.6">
 </head>
 <body>
 <main>
   <header><a href="https://k-oota-pixel.github.io/english-playroom/">← もんすたでぃ</a><a id="account" href="./login.html?return=index.html">ログイン</a></header>
   <div class="eyebrow">ことばで、限界をこわせ。</div>
-  <div class="game-title"><h1 data-game-name>WORD BREAKER</h1><span class="game-version">ver.1.5</span></div>
+  <div class="game-title"><h1 data-game-name>WORD BREAKER</h1><span class="game-version">ver.1.6</span></div>
   <p class="intro">迫る英単語を、日本語で撃破。ひとつの意味がわかればOK。</p>
   <aside id="world-records" class="world-records" aria-labelledby="world-record-title">
     <div class="world-record-heading"><h2 id="world-record-title">🏆 USER RECORD</h2><button id="world-record-refresh" class="secondary" type="button" aria-label="みんなの記録を更新">更新</button></div>
@@ -35,8 +35,12 @@
       <aside class="feedback" aria-labelledby="feedback-title"><details id="previous-feedback" open><summary id="feedback-title">前の解答を見る</summary><p id="feedback-empty">直前の問題をここに表示します。</p><div id="feedback-detail" hidden><strong id="feedback-word"></strong><p id="feedback-result"></p><small>YOUR ANSWER</small><p id="feedback-user"></p><small>ANSWER</small><p id="feedback-answers"></p></div></details></aside>
     </div>
   </section>
-  <section id="result" class="result" hidden tabindex="-1"><div class="eyebrow">GAME OVER</div><h2 id="result-heading">おつかれさま！</h2><p id="record" class="record" hidden>NEW RECORD!</p><div class="result-stats"><p>SCORE <b id="result-score"></b></p><p>BEST COMBO <b id="result-combo"></b></p><p>COINS EARNED <b id="result-coins"></b></p></div><p id="save-status" role="status"></p><button id="retry-save" class="secondary" hidden>保存を再試行</button><div class="actions"><button id="retry">もう一度</button><button id="choose" class="secondary">コースを選ぶ</button></div></section>
-  <p class="footer">ver1.5 · 日本語の表記ゆれ・自然な言い換えに対応 · ブラウザ内で即時判定</p>
+  <section id="result" class="result" hidden tabindex="-1"><div class="eyebrow">GAME OVER</div><h2 id="result-heading">おつかれさま！</h2><p id="record" class="record" hidden>NEW RECORD!</p><div class="result-stats"><p>SCORE <b id="result-score"></b></p><p>BEST COMBO <b id="result-combo"></b></p><p>COINS EARNED <b id="result-coins"></b></p></div><aside id="final-review" class="final-review" aria-labelledby="final-review-title" hidden>
+    <h3 id="final-review-title">最後の問題を振り返ろう</h3>
+    <p id="final-word" class="final-word"></p>
+    <dl><dt>模範解答例</dt><dd id="final-answers"></dd><dt>あなたの最後の解答</dt><dd id="final-user"></dd></dl>
+  </aside><p id="save-status" role="status"></p><button id="retry-save" class="secondary" hidden>保存を再試行</button><div class="actions"><button id="retry">もう一度</button><button id="choose" class="secondary">コースを選ぶ</button></div></section>
+  <p class="footer">ver1.6 · 日本語の表記ゆれ・自然な言い換えに対応 · ブラウザ内で即時判定</p>
 </main>
-<script type="module" src="./word-breaker.js?v=1.5"></script>
+<script type="module" src="./word-breaker.js?v=1.6"></script>
 </body></html>
