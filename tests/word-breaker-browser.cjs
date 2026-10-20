@@ -11,7 +11,7 @@ export async function runTransaction(db,fn){let staged;const result=await fn({ge
  const {DEMO}=await import('../word-breaker-data.js');
  const courses=JSON.parse(fs.readFileSync(path.join(root,'monstudy_vocab_master.json'),'utf8'));
  const actualWords=courses.levels.junior1.words;
- async function setup(guest,missing=false){
+ async function setup(guest,missing=false,vocabulary=courses){
    const context=await browser.newContext();const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.clock.install();
    await page.addInitScript(({guest})=>{window.guest=guest;window.wallet={coins:90,petName:'ふわ',petShop:{ownedItems:['crown']},wordBreakerBests:{high2:{score:100,combo:90}}};},{guest});
@@ -19,10 +19,24 @@ export async function runTransaction(db,fn){let staged;const result=await fn({ge
    await context.route('http://localhost:8765/**',route=>{
      const name=new URL(route.request().url()).pathname.slice(1);
      if(name==='nickname-profile.js')return route.fulfill({contentType:'text/javascript',body:''});
-     if(name==='monstudy_vocab_master.json')return route.fulfill({status:missing?404:200,contentType:'application/json',body:JSON.stringify(courses)});
+     if(name==='monstudy_vocab_master.json')return route.fulfill({status:missing?404:200,contentType:'application/json',body:JSON.stringify(vocabulary)});
      const file=path.join(root,name);return route.fulfill({contentType:file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':'text/html',body:fs.readFileSync(file)});
    });
    await page.goto('http://localhost:8765/index.html');return {page,context,errors};
+ }
+ // Exercise the actual form with real master entries and the production alias loader.
+ for(const [word,answer,wrong] of [['colorful','カラフル','カラフルじゃない'],['give','あげる','もらう']]){
+   const entry=courses.levels.basic.words.find(e=>e.word===word);
+   const focused={levels:Object.fromEntries(Object.keys(courses.levels).map(id=>[id,{words:[entry]}]))};
+   const check=await setup(false,false,focused),page=check.page;
+   await page.locator('#account').filter({hasText:'ログイン中'}).waitFor();
+   await page.locator('.course').first().click();await page.locator('#answer:enabled').waitFor();
+   assert.equal(await page.locator('#word').textContent(),word);
+   await page.locator('#answer').fill(wrong);await page.locator('#answer-form').evaluate(f=>f.requestSubmit());
+   assert.equal(await page.locator('#score').textContent(),'0');
+   await page.locator('#answer').fill(answer);await page.locator('#answer-form').evaluate(f=>f.requestSubmit());
+   assert.equal(await page.locator('#score').textContent(),'1');
+   assert.deepEqual(check.errors,[]);await check.context.close();
  }
  const guest=await setup(true,true),p=guest.page;
  await p.locator('#demo').waitFor({state:'visible'});assert.equal(await p.locator('.course:disabled').count(),6);

@@ -4,13 +4,28 @@ Independent GitHub Pages game for the Monstudy learning projects.
 
 - Live site: https://k-oota-pixel.github.io/word-breaker/
 - Main learning portal: https://k-oota-pixel.github.io/english-playroom/
-- Release: ver.1.3
+- Release: ver.1.5
 
 The app is a static site and needs no build step. Its Firebase connection uses the existing `eiken-retry` project and continues to save coins and course records under `users/{uid}/apps/english-playroom`, so records remain visible in the main portal dashboard. Authentication is shared on `k-oota-pixel.github.io`.
 
 ## Vocabulary
 
-`monstudy_vocab_master.json` includes the six courses (2,475 course entries). The game normalizes Japanese input and accepts a registered answer or keyword without using an external dictionary or AI service.
+`monstudy_vocab_master.json` includes the six courses (2,477 course entries). The game normalizes Japanese input and accepts a registered answer or keyword without using an external dictionary or AI service.
+
+Version 1.5 reviews all six courses and adds everyday paraphrases and spellings in
+`word-breaker-aliases.js`, keyed by English word. `cleanEntries` merges these into
+keywords consistently in every course and the practice fixture. Model answers
+remain unchanged. `colorful` was absent from the master and is now included in
+junior2 and basic; it accepts カラフル, 色鮮やかな and 色とりどりの.
+Other examples include give → あげる／くれる, receive → もらう,
+father → お父さん, sleep → 寝る and repair → 直す.
+
+Aliases are explicit, not shared globally by Japanese meaning. There is no
+substring, edit-distance or automatic synonym expansion. Tests cover every alias
+in every applicable course, negated/unrelated extensions of all registered
+meanings, and confusable pairs such as give/receive, lend/borrow and useful/useless.
+Negative definitions such as useless → 役立たない remain valid.
+Versioned module and master-data URLs refresh the vocabulary on release.
 
 ## Play and records
 

@@ -1,3 +1,5 @@
+import { WORD_ALIASES } from './word-breaker-aliases.js?v=1.5';
+
 export const GAME_NAME = 'WORD BREAKER';
 export const COURSES = [ ['junior1','中1'], ['junior2','中2'], ['junior3','中3'], ['high1','高1'], ['high2','高2'], ['basic','基礎英単語'] ];
 export const LIMIT_MS = 17000;
@@ -58,7 +60,9 @@ function forms(value) {
   const suffix = /(?:という意味|といういみ|ということ|ことです|こと|ものです|もの|なのです|なんです|でした|です|である|だ|な|に|していました|していた|しています|している|しました|します|する|をする|で)$/;
   while (queue.length) {
     const s = queue.shift();
-    for (const t of [s.replace(prefix,''),s.replace(suffix,'')]) {
+    // Also try the short polite ending: "のみものです" must retain "のみもの",
+    // even when the longer grammatical wrapper "ものです" matches first.
+    for (const t of [s.replace(prefix,''),s.replace(suffix,''),s.replace(/(?:です|でした)$/,'')]) {
       if (t && !result.has(t)) { result.add(t); queue.push(t); }
     }
   }
@@ -82,7 +86,8 @@ export function cleanEntries(entries) {
   const seen = new Set();
   return entries.map(e => {
     const word = String(e.word || '').normalize('NFKC').replace(/\s*[（(].*$/,'').replace(/[～~]/g,'').trim();
-    return {...e, word, answers: (e.answers || []).filter(x => typeof x === 'string' && x.trim()), keywords: (e.keywords || []).filter(x => typeof x === 'string' && x.trim())};
+    const keywords = [...(e.keywords || []), ...(WORD_ALIASES[word.toLowerCase()] || [])];
+    return {...e, word, answers: (e.answers || []).filter(x => typeof x === 'string' && x.trim()), keywords: [...new Set(keywords.filter(x => typeof x === 'string' && x.trim()))]};
   }).filter(e => {
     const key = e.word.toLowerCase();
     if (!key || key === 'nat' || seen.has(key) || !e.answers.length) return false;

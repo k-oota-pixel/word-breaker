@@ -55,7 +55,7 @@ test('shuffle cycles continue without adjacent duplicate at cycle boundaries',()
 const master=JSON.parse(readFileSync(new URL('../monstudy_vocab_master.json',import.meta.url),'utf8'));
 const vocabulary=parseVocabulary(master);
 test('complete supplied six-course master has expected counts and valid unique entries',()=>{
-  assert.deepEqual(Object.values(vocabulary).map(c=>c.length),[272,343,340,420,482,618]);
+  assert.deepEqual(Object.values(vocabulary).map(c=>c.length),[272,344,340,420,482,619]);
   for(const entries of Object.values(vocabulary)){
     assert.equal(new Set(entries.map(e=>e.word.toLowerCase())).size,entries.length);
     for(const e of entries){assert.ok(e.answers.length && e.keywords.length,e.word);assert.ok(!/[～~（）]/.test(e.word),e.word);assert.notEqual(e.word,'nat');}

@@ -1,4 +1,4 @@
-import { COURSES, cleanEntries } from './word-breaker-engine.js';
+import { COURSES, cleanEntries } from './word-breaker-engine.js?v=1.5';
 // Small practice fixture, also used by engine tests. Course play uses the master.
 export const DEMO = cleanEntries([
   {word:'important',answers:['重要な','大切な','大事な'],keywords:['じゅうよう','たいせつ','だいじ']},
@@ -23,7 +23,7 @@ export const DEMO = cleanEntries([
   {word:'stock',answers:['在庫','株式','蓄え'],keywords:['ざいこ','かぶしき','たくわえ']}
 ]);
 export async function loadVocabulary() {
-  const response=await fetch('./monstudy_vocab_master.json');
+  const response=await fetch('./monstudy_vocab_master.json?v=1.5');
   if (!response.ok) throw new Error('単語データを読み込めませんでした。再読み込みするか操作体験をご利用ください。');
   const data=await response.json();
   return parseVocabulary(data);
