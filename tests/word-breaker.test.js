@@ -11,6 +11,21 @@ test('Japanese normalization and grammatical variants, with semantic boundaries'
   for(const answer of ['観光','日光浴','重い','軽くない','光らない'])assert.equal(judge(light,answer),false,answer);
   assert.equal(normalize(' アカリ！ '),'あかり');
 });
+test('common everyday paraphrases are accepted without unsafe fuzzy matches',()=>{
+  const word=name=>vocabulary.basic.find(e=>e.word===name)||Object.values(vocabulary).flat().find(e=>e.word===name);
+  const breakfast=word('breakfast'),lunch=word('lunch'),dinner=word('dinner'),angry=word('angry'),tired=word('tired');
+  for(const answer of ['朝ごはん','朝ご飯','朝御飯','朝飯','あさごはん','朝ごはんです'])assert.ok(judge(breakfast,answer),answer);
+  for(const answer of ['朝','ごはん','昼ごはん','朝ごはんじゃない'])assert.equal(judge(breakfast,answer),false,answer);
+  for(const answer of ['昼ごはん','昼御飯','ひるめし'])assert.ok(judge(lunch,answer),answer);
+  for(const answer of ['晩ごはん','夜ご飯','夕飯','ばんめし'])assert.ok(judge(dinner,answer),answer);
+  for(const answer of ['怒っている','怒ってる','おこっている','腹を立てている'])assert.ok(judge(angry,answer),answer);
+  assert.equal(judge(angry,'怒っていない'),false);
+  for(const answer of ['疲れている','疲れてる'])assert.ok(judge(tired,answer),answer);
+  assert.ok(judge(word('child'),'子供'));
+  assert.ok(judge(word('beautiful'),'綺麗'));
+  assert.ok(judge(word('delicious'),'美味しい'));
+  assert.ok(judge(word('cute'),'可愛い'));
+});
 test('cleanup deduplicates within course and excludes unknown nat',()=>{
   const result=cleanEntries(['human ～','human','usual ～','nat','elderly （失礼な場合olderの形容詞を使う）'].map(word=>({word,answers:['訳']})));
   assert.deepEqual(result.map(e=>e.word),['human','usual','elderly']);
