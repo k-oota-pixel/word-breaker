@@ -4,13 +4,13 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
   <title>WORD BREAKER</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./word-breaker.css?v=1.6">
+  <link rel="stylesheet" href="./word-breaker.css?v=1.7">
 </head>
 <body>
 <main>
   <header><a href="https://k-oota-pixel.github.io/english-playroom/">← もんすたでぃ</a><a id="account" href="./login.html?return=index.html">ログイン</a></header>
   <div class="eyebrow">ことばで、限界をこわせ。</div>
-  <div class="game-title"><h1 data-game-name>WORD BREAKER</h1><span class="game-version">ver.1.6</span></div>
+  <div class="game-title"><h1 data-game-name>WORD BREAKER</h1><span class="game-version">ver.1.7</span></div>
   <p class="intro">迫る英単語を、日本語で撃破。ひとつの意味がわかればOK。</p>
   <aside id="world-records" class="world-records" aria-labelledby="world-record-title">
     <div class="world-record-heading"><h2 id="world-record-title">🏆 USER RECORD</h2><button id="world-record-refresh" class="secondary" type="button" aria-label="みんなの記録を更新">更新</button></div>
@@ -21,7 +21,7 @@
     <h2 id="course-title">コースを選ぶ</h2>
     <p id="data-status" role="status">語彙データを読み込んでいます…</p>
     <div id="courses" class="courses"></div>
-    <div class="rules"><strong>2 LIFE · 1 WORD = 1 SCORE · ENDLESS</strong><p>1語17秒。終盤は単語が赤く点滅します。誤答は何度でも再入力OK。時間切れでLIFE −1、COMBOは0に戻ります。</p><p>最初の10語撃破で1コイン。さらに20 COMBOごとに1コイン。ログインすると共通SHOPで使えます。</p></div>
+    <div class="rules"><strong>2 LIFE · 1 WORD = 1 SCORE · ENDLESS</strong><p>1語17秒。終盤は単語が赤く点滅します。誤答は何度でも再入力OK。時間切れでLIFE −1、COMBOは0に戻ります。</p><p>10語撃破で1コイン。以降は累計25・40・55語…と15語撃破ごとに1コイン。ログインすると共通SHOPで使えます。</p></div>
     <button id="demo" class="secondary" hidden>操作を体験する（サンプル・コイン対象外）</button>
   </section>
   <section id="play" hidden aria-label="ゲーム">
@@ -40,7 +40,7 @@
     <p id="final-word" class="final-word"></p>
     <dl><dt>模範解答例</dt><dd id="final-answers"></dd><dt>あなたの最後の解答</dt><dd id="final-user"></dd></dl>
   </aside><p id="save-status" role="status"></p><button id="retry-save" class="secondary" hidden>保存を再試行</button><div class="actions"><button id="retry">もう一度</button><button id="choose" class="secondary">コースを選ぶ</button></div></section>
-  <p class="footer">ver1.6 · 日本語の表記ゆれ・自然な言い換えに対応 · ブラウザ内で即時判定</p>
+  <p class="footer">ver1.7 · 日本語の表記ゆれ・自然な言い換えに対応 · ブラウザ内で即時判定</p>
 </main>
-<script type="module" src="./word-breaker.js?v=1.6"></script>
+<script type="module" src="./word-breaker.js?v=1.7"></script>
 </body></html>

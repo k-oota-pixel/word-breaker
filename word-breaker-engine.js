@@ -115,7 +115,7 @@ export class Round {
     this.lastAnswer=input;
     if (!judge(this.current,input)) return {type:'wrong'};
     this.active=false; this.score++; this.combo++; this.bestCombo=Math.max(this.bestCombo,this.combo);
-    const reward=Number(this.score===10)+Number(this.combo%20===0);
+    const reward=Number(this.score>=10&&(this.score-10)%15===0);
     this.rewards+=reward;
     return {type:'correct',reward};
   }

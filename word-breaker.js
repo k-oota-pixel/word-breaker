@@ -1,5 +1,5 @@
 import {mountRecords} from './word-breaker-records.js?v=1.5';
-import { GAME_NAME, COURSES, Round, LIMIT_MS, WARNING_MS } from './word-breaker-engine.js?v=1.5';
+import { GAME_NAME, COURSES, Round, LIMIT_MS, WARNING_MS } from './word-breaker-engine.js?v=1.7';
 import { DEMO, loadVocabulary } from './word-breaker-data.js?v=1.5';
 
 const $=id=>document.getElementById(id);

@@ -40,13 +40,13 @@ test('wrong answers are retryable, deadlines are strict and only one life is los
   round.next(40000);assert.equal(round.timeout().type,'over');assert.equal(round.life,0);
   assert.equal(LIMIT_MS-WARNING_MS,5000);
 });
-test('endless bag and reward thresholds include a single score-ten reward',()=>{
+test('coin rewards follow total scores 10, 25, 40, 55 and survive combo resets',()=>{
   const round=new Round([important]);
   const correct=()=>{round.next(0);return round.resolve('大切',1);};
-  for(let i=1;i<=80;i++){const r=correct();assert.equal(r.reward,i===10||i%20===0?1:0);}
+  for(let i=1;i<=80;i++){const r=correct();assert.equal(r.reward,i>=10&&(i-10)%15===0?1:0);}
   assert.equal(round.rewards,5);assert.equal(round.bestCombo,80);
   round.next(0);round.timeout();assert.equal(round.combo,0);
-  for(let i=0;i<20;i++)correct();assert.equal(round.rewards,6);assert.equal(round.score,100);assert.equal(round.bestCombo,80);
+  for(let i=0;i<20;i++)correct();assert.equal(round.rewards,7);assert.equal(round.score,100);assert.equal(round.bestCombo,80);
 });
 test('shuffle cycles continue without adjacent duplicate at cycle boundaries',()=>{
   const round=new Round(DEMO,()=>0.2);let previous;
