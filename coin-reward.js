@@ -36,11 +36,12 @@ function ensureToast(){
 let toastTimer=0;
 function toast(text){const el=ensureToast();el.textContent=text;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2200);}
 
-let lastLearningUid='',lastLearningSent=0;
-async function recordLearningActivity(){
+let lastLearningUid='',lastLearningApp='',lastLearningSent=0;
+function learningContentFromPage(){const path=location.pathname;return ['word-breaker','ateru','basic-quest','eiken-retry','task-quest','eiken-cloze','eiken-title','listening-training','pre2-interview-questions','eiken-pre2-interview-a','talk-quest','pet-catch'].find(id=>path.split('/').includes(id));}
+async function recordLearningActivity(appId=learningContentFromPage()){
   await authReady;const user=currentUser;if(!user||typeof fetch!=='function')return;
-  if(lastLearningUid===user.uid&&Date.now()-lastLearningSent<1000)return;lastLearningUid=user.uid;lastLearningSent=Date.now();
-  try{const token=await user.getIdToken();const response=await fetch('https://task-quest.onrender.com/api/learning/activity',{method:'POST',headers:{Authorization:'Bearer '+token},keepalive:true});if(!response.ok)throw Error('HTTP '+response.status);}catch(error){console.warn('Learning activity update deferred',error);}
+  if(lastLearningUid===user.uid&&lastLearningApp===appId&&Date.now()-lastLearningSent<1000)return;lastLearningUid=user.uid;lastLearningApp=appId;lastLearningSent=Date.now();
+  try{const token=await user.getIdToken();const response=await fetch('https://task-quest.onrender.com/api/learning/activity',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(appId?{appId}:{}),keepalive:true});if(!response.ok)throw Error('HTTP '+response.status);}catch(error){console.warn('Learning activity update deferred',error);}
 }
 
 async function awardOncePerDay(appId,itemId,label='1コインGET！'){
