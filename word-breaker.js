@@ -53,7 +53,7 @@ function saveProgress(publishWorldRecord=false) {
   saving++;$('save-status').textContent='記録とコインを保存中…';$('retry-save').hidden=true;
   saveChain=saveChain.catch(()=>{}).then(async()=>{
     try {await run.ready;} catch {run.ready=run.register();await run.ready;}
-    savedCoins=await store.saveRun(snapshot);unsaved=false;
+    savedCoins=await store.saveRun(snapshot);unsaved=false;window.EnglishPlayroomCoins?.recordLearningActivity?.();
     bests[course]={score:Math.max(bests[course]?.score||0,snapshot.score),combo:Math.max(bests[course]?.combo||0,snapshot.bestCombo)};
     if(publishWorldRecord&&store.publishRecord){
       try {await store.publishRecord(course);document.dispatchEvent(new Event('word-breaker-record-saved'));} catch {}
