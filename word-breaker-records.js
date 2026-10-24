@@ -1,4 +1,4 @@
-import {makeDialog} from 'https://k-oota-pixel.github.io/english-playroom/learning-titles.js?v=1.10.3';
+import {makeDialog} from 'https://k-oota-pixel.github.io/english-playroom/learning-titles.js?v=1.10.4';
 import {COURSES} from './word-breaker-engine.js';
 const API='https://task-quest.onrender.com/api/word-breaker/records';
 export function mountRecords(){

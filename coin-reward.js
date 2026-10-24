@@ -1,4 +1,4 @@
-import {announceTitles} from 'https://k-oota-pixel.github.io/english-playroom/learning-titles.js?v=1.10.3';
+import {announceTitles} from 'https://k-oota-pixel.github.io/english-playroom/learning-titles.js?v=1.10.4';
 import 'https://k-oota-pixel.github.io/english-playroom/material-open.js?v=1.9.6';
 import {interviewAttemptPatch} from './dashboard-extra.js?v=1';
 import './nickname-profile.js';
@@ -22,7 +22,7 @@ export { auth, db, authReady, walletRef };
 let currentUser=auth.currentUser||null;
 let authResolved=false,resolveAuth;
 const authReady=new Promise(r=>resolveAuth=r);
-onAuthStateChanged(auth,user=>{currentUser=user||null;if(!authResolved){authResolved=true;resolveAuth();}});
+onAuthStateChanged(auth,user=>{currentUser=user||null;if(user)queueMicrotask(flushTitleEvents);if(!authResolved){authResolved=true;resolveAuth();}});
 
 function todayKey(){
   const d=new Date();
@@ -37,6 +37,33 @@ function ensureToast(){
 }
 let toastTimer=0;
 function toast(text){const el=ensureToast();el.textContent=text;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2200);}
+
+
+const titleMemory=new Map();let titleQueue=Promise.resolve();
+function readTitleOutbox(key){try{return JSON.parse(localStorage.getItem(key)||'null')||titleMemory.get(key)||[];}catch{return titleMemory.get(key)||[];}}
+function writeTitleOutbox(key,rows){titleMemory.set(key,rows);try{localStorage.setItem(key,JSON.stringify(rows));}catch{}}
+function flushTitleEvents(){const uid=currentUser?.uid;if(!uid)return;for(const row of readTitleOutbox('monstudy-title-outbox:'+uid))void recordTitleEvent(row.event.appId,row.event);}
+window.addEventListener('online',flushTitleEvents);
+function recordTitleEvent(appId,payload={}){
+ const user=currentUser;if(!user||(payload.expectedUid!==undefined&&payload.expectedUid!==user.uid))return Promise.resolve();
+ const event={...payload,appId,eventId:payload.eventId||crypto.randomUUID()};
+ const key='monstudy-title-outbox:'+user.uid;
+ let pending=readTitleOutbox(key);
+ if(!pending.some(x=>x.event.eventId===event.eventId))pending.push({event,at:Date.now()});
+ writeTitleOutbox(key,pending.slice(-300));
+ titleQueue=titleQueue.catch(()=>{}).then(async()=>{
+  const rows=readTitleOutbox(key);
+  for(const row of rows){
+   if(currentUser?.uid!==user.uid)return;
+   if(Date.now()-row.at>86400000){remove(row.event.eventId);continue;}
+   try{const token=await user.getIdToken();if(currentUser?.uid!==user.uid)return;const r=await fetch('https://task-quest.onrender.com/api/learning/title-event',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(row.event)});
+    if(!r.ok){if(r.status===400)remove(row.event.eventId);else break;continue;}
+    const result=await r.json();remove(row.event.eventId);if(currentUser?.uid===user.uid)announceTitles(result.freshTitles);
+   }catch{break;}
+  }
+ });return titleQueue;
+ function remove(id){writeTitleOutbox(key,readTitleOutbox(key).filter(x=>x.event.eventId!==id));}
+}
 
 let lastLearningUid='',lastLearningApp='',lastLearningSent=0;
 function learningContentFromPage(){const path=location.pathname;return ['word-breaker','ateru','basic-quest','eiken-retry','task-quest','eiken-cloze','eiken-title','listening-training','pre2-interview-questions','eiken-pre2-interview-a','talk-quest','pet-catch'].find(id=>path.split('/').includes(id));}
@@ -94,6 +121,8 @@ async function recordRetryAttempt(questionId){
 }
 
 window.EnglishPlayroomCoins=Object.freeze({
+  getUserId:()=>currentUser?.uid||'',
+  recordTitleEvent,
   recordLearningActivity,
   awardOncePerDay,
   recordRetryAttempt,

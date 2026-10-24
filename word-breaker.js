@@ -1,4 +1,4 @@
-import {mountRecords} from './word-breaker-records.js?v=1.10.3';
+import {mountRecords} from './word-breaker-records.js?v=1.10.4';
 import { GAME_NAME, COURSES, Round, LIMIT_MS, WARNING_MS } from './word-breaker-engine.js?v=1.7';
 import { DEMO, loadVocabulary } from './word-breaker-data.js?v=1.5';
 
@@ -6,6 +6,7 @@ const $=id=>document.getElementById(id);
 const worldRecords=mountRecords();
 document.title=`${GAME_NAME} | もんすたでぃ`;
 document.querySelectorAll('[data-game-name]').forEach(el=>el.textContent=GAME_NAME);
+let titleWrong=new Set(),titleRecovered=false,titleOneLife=0;
 let vocabulary={},bests={},localBests={},store=null,user=null,round=null,course=null,run=null,playerUid=null;
 let animation=0,transition=0,wrongReset=0,generation=0,saveChain=Promise.resolve(),savedCoins=0,saving=0,unsaved=false,oldBest={};
 const mobile=matchMedia('(max-width:720px)');
@@ -49,12 +50,13 @@ function updateHUD() {$('score').textContent=round.score;$('combo').textContent=
 function saveProgress(publishWorldRecord=false) {
   safeGuestSave();
   if(!run || !store || !user || course==='demo') return Promise.resolve();
+  const titleData={kind:'run',eventId:run.id,score:round.score,combo:round.bestCombo,course,oneLifeCorrect:titleOneLife,recovered:titleRecovered};
   const snapshot={...run,rewards:round.rewards,score:round.score,bestCombo:round.bestCombo};
   const attempted=round.score>0||round.life<2;
   saving++;$('save-status').textContent='記録とコインを保存中…';$('retry-save').hidden=true;
   saveChain=saveChain.catch(()=>{}).then(async()=>{
     try {await run.ready;} catch {run.ready=run.register();await run.ready;}
-    savedCoins=await store.saveRun(snapshot);unsaved=false;if(attempted)window.EnglishPlayroomCoins?.recordLearningActivity?.();
+    savedCoins=await store.saveRun(snapshot);if(publishWorldRecord&&attempted&&user?.uid===snapshot.uid)window.EnglishPlayroomCoins?.recordTitleEvent?.('word-breaker',titleData);unsaved=false;if(attempted)window.EnglishPlayroomCoins?.recordLearningActivity?.();
     bests[course]={score:Math.max(bests[course]?.score||0,snapshot.score),combo:Math.max(bests[course]?.combo||0,snapshot.bestCombo)};
     if(publishWorldRecord&&store.publishRecord){
       try {await store.publishRecord(course);document.dispatchEvent(new Event('word-breaker-record-saved'));} catch {}
@@ -70,7 +72,7 @@ async function start(id) {
   if(saving||unsaved) return;
   cancelAnimationFrame(animation);clearTimeout(transition);clearTimeout(wrongReset);generation++;
   const current=generation;
-  course=id;round=new Round(id==='demo'?DEMO:vocabulary[id]);oldBest={...best(id)};savedCoins=0;run=null;playerUid=null;
+  titleWrong=new Set();titleRecovered=false;titleOneLife=0;course=id;round=new Round(id==='demo'?DEMO:vocabulary[id]);oldBest={...best(id)};savedCoins=0;run=null;playerUid=null;
   $('save-status').textContent='';$('retry-save').hidden=true;$('feedback-empty').hidden=false;$('feedback-detail').hidden=true;
   show('play');updateHUD();$('message').textContent='';$('word').textContent='準備中…';$('answer').value='';$('answer').disabled=false;$('submit').disabled=true;focusAnswer();
   // SDK failure must never prevent a guest from playing.
@@ -122,7 +124,8 @@ function wrongFeedback() {
 }
 function settle(result) {
   if(result.type==='ignored') return;
-  if(result.type==='wrong') {wrongFeedback();$('message').textContent='もう一度！ 制限時間内なら何回でも答えられます。';$('answer').select();return;}
+  if(result.type==='wrong') {titleWrong.add(round.current.word);wrongFeedback();$('message').textContent='もう一度！ 制限時間内なら何回でも答えられます。';$('answer').select();return;}
+  if(result.type==='correct'){if(titleWrong.has(round.current.word))titleRecovered=true;if(round.life===1)titleOneLife++;}else titleWrong.add(round.current.word);
   cancelAnimationFrame(animation);clearTimeout(wrongReset);$('answer').classList.remove('wrong');$('answer').value='';$('submit').disabled=true;
   feedback(result.type);updateHUD();particles();$('word').style.opacity='0';
   if(result.type!=='correct') $('arena').classList.add('explode');
@@ -158,7 +161,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden && round?.
 renderCourses();
 loadVocabulary().then(data=>{vocabulary=data;$('data-status').textContent='6コースから選択できます。';renderCourses();}).catch(error=>{$('data-status').textContent=error.message;$('demo').hidden=false;});
 // Load Firebase independently: vocabulary and gameplay remain usable offline.
-import('./word-breaker-store.js?v=1.10.3').then(async module=>{
+import('./word-breaker-store.js?v=1.10.4').then(async module=>{
   user=await module.currentAccount();store=module;
   if(user){$('account').textContent='ログイン中';$('account').href='./index.html';try{bests=await store.readBests();}catch{$('data-status').textContent+=' 自己ベストの読み込みに失敗しました。';}}
   renderCourses();
