@@ -1,3 +1,4 @@
+import {announceTitles} from 'https://k-oota-pixel.github.io/english-playroom/learning-titles.js?v=1.10.1';
 import 'https://k-oota-pixel.github.io/english-playroom/material-open.js?v=1.9.6';
 import {interviewAttemptPatch} from './dashboard-extra.js?v=1';
 import './nickname-profile.js';
@@ -42,7 +43,7 @@ function learningContentFromPage(){const path=location.pathname;return ['word-br
 async function recordLearningActivity(appId=learningContentFromPage()){
   await authReady;const user=currentUser;if(!user||typeof fetch!=='function')return;
   if(lastLearningUid===user.uid&&lastLearningApp===appId&&Date.now()-lastLearningSent<1000)return;lastLearningUid=user.uid;lastLearningApp=appId;lastLearningSent=Date.now();
-  try{const token=await user.getIdToken();const response=await fetch('https://task-quest.onrender.com/api/learning/activity',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(appId?{appId}:{}),keepalive:true});if(!response.ok)throw Error('HTTP '+response.status);}catch(error){console.warn('Learning activity update deferred',error);}
+  try{const token=await user.getIdToken();const response=await fetch('https://task-quest.onrender.com/api/learning/activity',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(appId?{appId}:{}),keepalive:true});if(!response.ok)throw Error('HTTP '+response.status);const result=await response.json();if(currentUser?.uid===user.uid)announceTitles(result.freshTitles);}catch(error){console.warn('Learning activity update deferred',error);}
 }
 
 async function awardOncePerDay(appId,itemId,label='1コインGET！'){

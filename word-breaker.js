@@ -1,4 +1,4 @@
-import {mountRecords} from './word-breaker-records.js?v=1.5';
+import {mountRecords} from './word-breaker-records.js?v=1.10.1';
 import { GAME_NAME, COURSES, Round, LIMIT_MS, WARNING_MS } from './word-breaker-engine.js?v=1.7';
 import { DEMO, loadVocabulary } from './word-breaker-data.js?v=1.5';
 
@@ -158,7 +158,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden && round?.
 renderCourses();
 loadVocabulary().then(data=>{vocabulary=data;$('data-status').textContent='6コースから選択できます。';renderCourses();}).catch(error=>{$('data-status').textContent=error.message;$('demo').hidden=false;});
 // Load Firebase independently: vocabulary and gameplay remain usable offline.
-import('./word-breaker-store.js?v=1.5').then(async module=>{
+import('./word-breaker-store.js?v=1.10.1').then(async module=>{
   user=await module.currentAccount();store=module;
   if(user){$('account').textContent='ログイン中';$('account').href='./index.html';try{bests=await store.readBests();}catch{$('data-status').textContent+=' 自己ベストの読み込みに失敗しました。';}}
   renderCourses();
