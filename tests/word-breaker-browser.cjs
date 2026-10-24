@@ -16,6 +16,7 @@ export async function runTransaction(db,fn){let staged;const result=await fn({ge
    await page.clock.install();
    await page.addInitScript(({guest})=>{window.guest=guest;window.wallet={coins:90,petName:'ふわ',petShop:{ownedItems:['crown']},wordBreakerBests:{high2:{score:100,combo:90}}};},{guest});
    await context.route('https://www.gstatic.com/firebasejs/**',route=>route.fulfill({contentType:'text/javascript',body:route.request().url().includes('firebase-app')?appMock:route.request().url().includes('firebase-auth')?authMock:firestoreMock}));
+   await context.route('https://k-oota-pixel.github.io/english-playroom/**',route=>route.fulfill({contentType:'text/javascript',body:route.request().url().includes('learning-titles.js')?"export function announceTitles(){};export function makeDialog(){const dialog=document.createElement('dialog');document.body.append(dialog);return dialog;}":''}));
    await context.route('http://localhost:8765/**',route=>{
      const name=new URL(route.request().url()).pathname.slice(1);
      if(name==='nickname-profile.js')return route.fulfill({contentType:'text/javascript',body:''});
