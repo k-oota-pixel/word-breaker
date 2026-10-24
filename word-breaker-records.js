@@ -1,4 +1,4 @@
-import {makeDialog} from 'https://k-oota-pixel.github.io/english-playroom/learning-titles.js?v=1.10.1';
+import {makeDialog} from 'https://k-oota-pixel.github.io/english-playroom/learning-titles.js?v=1.10.2';
 import {COURSES} from './word-breaker-engine.js';
 const API='https://task-quest.onrender.com/api/word-breaker/records';
 export function mountRecords(){
@@ -16,7 +16,7 @@ export function mountRecords(){
    const name=document.createElement('p');name.className='world-record-name';
    const score=document.createElement('p');score.className='world-record-score';
    if(value?.score>0&&names.length){
-    name.textContent='👑 '+(Array.isArray(value.leaders)?value.leaders.map(v=>v.petName+(v.title?' ー'+v.title+'ー':'')).join('・'):names.join('・'))+(value.leaderCount>names.length?` ほか${value.leaderCount-names.length}匹`:'');
+    name.textContent='👑 '+(Array.isArray(value.leaders)?value.leaders.map(v=>v.petName+' ー'+(v.title||'称号なし')+'ー').join('・'):names.map(n=>n+' ー称号なしー').join('・'))+(value.leaderCount>names.length?` ほか${value.leaderCount-names.length}匹`:'');
     score.textContent=`${value.score.toLocaleString()} SCORE`+(value.leaderCount>1?' · 同率1位':'');
    }else{
     name.textContent=records?'最初のチャンピオンになろう！':'—';

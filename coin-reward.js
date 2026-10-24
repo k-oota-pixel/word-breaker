@@ -1,4 +1,4 @@
-import {announceTitles} from 'https://k-oota-pixel.github.io/english-playroom/learning-titles.js?v=1.10.1';
+import {announceTitles} from 'https://k-oota-pixel.github.io/english-playroom/learning-titles.js?v=1.10.2';
 import 'https://k-oota-pixel.github.io/english-playroom/material-open.js?v=1.9.6';
 import {interviewAttemptPatch} from './dashboard-extra.js?v=1';
 import './nickname-profile.js';
