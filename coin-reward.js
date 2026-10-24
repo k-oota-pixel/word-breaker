@@ -1,3 +1,4 @@
+import 'https://k-oota-pixel.github.io/english-playroom/material-open.js?v=1.9.6';
 import {interviewAttemptPatch} from './dashboard-extra.js?v=1';
 import './nickname-profile.js';
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
