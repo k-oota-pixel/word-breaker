@@ -50,10 +50,11 @@ function saveProgress(publishWorldRecord=false) {
   safeGuestSave();
   if(!run || !store || !user || course==='demo') return Promise.resolve();
   const snapshot={...run,rewards:round.rewards,score:round.score,bestCombo:round.bestCombo};
+  const attempted=round.score>0||round.life<2;
   saving++;$('save-status').textContent='記録とコインを保存中…';$('retry-save').hidden=true;
   saveChain=saveChain.catch(()=>{}).then(async()=>{
     try {await run.ready;} catch {run.ready=run.register();await run.ready;}
-    savedCoins=await store.saveRun(snapshot);unsaved=false;window.EnglishPlayroomCoins?.recordLearningActivity?.();
+    savedCoins=await store.saveRun(snapshot);unsaved=false;if(attempted)window.EnglishPlayroomCoins?.recordLearningActivity?.();
     bests[course]={score:Math.max(bests[course]?.score||0,snapshot.score),combo:Math.max(bests[course]?.combo||0,snapshot.bestCombo)};
     if(publishWorldRecord&&store.publishRecord){
       try {await store.publishRecord(course);document.dispatchEvent(new Event('word-breaker-record-saved'));} catch {}
