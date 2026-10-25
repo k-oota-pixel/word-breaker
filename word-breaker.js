@@ -8,6 +8,7 @@ document.title=`${GAME_NAME} | もんすたでぃ`;
 document.querySelectorAll('[data-game-name]').forEach(el=>el.textContent=GAME_NAME);
 let titleWrong=new Set(),titleRecovered=false,titleOneLife=0;
 let vocabulary={},bests={},localBests={},store=null,user=null,round=null,course=null,run=null,playerUid=null;
+globalThis.MonstudyMaterial?.setActivityGuard(()=>Boolean(round?.active || unsaved || saving));
 let animation=0,transition=0,wrongReset=0,generation=0,saveChain=Promise.resolve(),savedCoins=0,saving=0,unsaved=false,oldBest={};
 const mobile=matchMedia('(max-width:720px)');
 let composing=false,viewportFrame=0;
