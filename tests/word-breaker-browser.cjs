@@ -23,7 +23,8 @@ export async function runTransaction(db,fn){let staged;const result=await fn({ge
      if(name==='monstudy_vocab_master.json')return route.fulfill({status:missing?404:200,contentType:'application/json',body:JSON.stringify(vocabulary)});
      const file=path.join(root,name);return route.fulfill({contentType:file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':'text/html',body:fs.readFileSync(file)});
    });
-   await page.goto('http://localhost:8765/index.html');return {page,context,errors};
+   await page.route('**/auth-session.js*',r=>r.fulfill({contentType:'text/javascript',body:"export * from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js';"}));
+await page.goto('http://localhost:8765/index.html');return {page,context,errors};
  }
  // Exercise the actual form with real master entries and the production alias loader.
  for(const [word,answer,wrong] of [['colorful','カラフル','カラフルじゃない'],['give','あげる','もらう']]){

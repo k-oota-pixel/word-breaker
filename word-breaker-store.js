@@ -1,4 +1,4 @@
-import { auth, db, authReady, walletRef } from './coin-reward.js?v=1.10.4';
+import { auth, db, authReady, walletRef } from './coin-reward.js?v=2.1.2';
 import { runTransaction, serverTimestamp } from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js';
 
 const RECORD_API='https://task-quest.onrender.com/api/word-breaker/records';

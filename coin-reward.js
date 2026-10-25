@@ -1,9 +1,9 @@
-import {announceTitles} from 'https://k-oota-pixel.github.io/english-playroom/learning-titles.js?v=1.10.4';
+import {announceTitles} from 'https://k-oota-pixel.github.io/english-playroom/learning-titles.js?v=2.1.2';
 import 'https://k-oota-pixel.github.io/english-playroom/material-open.js?v=1.9.6';
 import {interviewAttemptPatch} from './dashboard-extra.js?v=1';
-import './nickname-profile.js';
+import './nickname-profile.js?v=2.1.2';
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://k-oota-pixel.github.io/english-playroom/auth-session.js?v=2.1.2";
 import { getFirestore, doc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
 const firebaseConfig={
