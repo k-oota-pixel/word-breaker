@@ -40,6 +40,14 @@ test('wrong answers are retryable, deadlines are strict and only one life is los
   round.next(40000);assert.equal(round.timeout().type,'over');assert.equal(round.life,0);
   assert.equal(LIMIT_MS-WARNING_MS,5000);
 });
+test('pass costs exactly one life, resets combo, preserves score and cannot double-charge',()=>{
+  const round=new Round([important]);
+  round.score=3;round.combo=3;round.bestCombo=3;round.next(100);
+  assert.equal(round.pass().type,'pass');assert.equal(round.life,1);assert.equal(round.combo,0);assert.equal(round.score,3);assert.equal(round.bestCombo,3);
+  assert.equal(round.pass().type,'ignored');assert.equal(round.timeout().type,'ignored');assert.equal(round.life,1);
+  round.next(200);assert.equal(round.pass().type,'pass');assert.equal(round.life,0);
+  assert.equal(round.pass().type,'ignored');assert.equal(round.timeout().type,'ignored');assert.equal(round.life,0);
+});
 test('coin rewards follow total scores 10, 25, 40, 55 and survive combo resets',()=>{
   const round=new Round([important]);
   const correct=()=>{round.next(0);return round.resolve('大切',1);};
