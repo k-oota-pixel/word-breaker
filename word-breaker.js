@@ -126,12 +126,12 @@ function wrongFeedback() {
 function settle(result) {
   if(result.type==='ignored') return;
   if(result.type==='wrong') {titleWrong.add(round.current.word);wrongFeedback();$('message').textContent='もう一度！ 制限時間内なら何回でも答えられます。';$('answer').select();return;}
-  if(result.type==='correct'){if(titleWrong.has(round.current.word))titleRecovered=true;if(round.life===1)titleOneLife++;}else titleWrong.add(round.current.word);
+  if(result.type==='correct'){if(titleWrong.has(round.current.word))titleRecovered=true;if(round.life===1)titleOneLife++;unsaved=true;}else titleWrong.add(round.current.word);
   cancelAnimationFrame(animation);clearTimeout(wrongReset);$('answer').classList.remove('wrong');$('answer').value='';$('submit').disabled=true;$('pass').disabled=true;
   feedback(result.type);updateHUD();particles();$('word').style.opacity='0';
   if(result.type!=='correct') $('arena').classList.add('explode');
   $('message').textContent=result.type==='correct'?`✓ 撃破！${result.reward?' コイン獲得条件達成！':''}`:result.type==='pass'?'パスしました。LIFE −1、COMBOが0になりました。':'時間切れ。COMBOが0になりました。';
-  saveProgress();
+  if(result.type==='correct'&&(result.reward||round.score%10===0))saveProgress();
   const current=generation;transition=setTimeout(()=>{if(current!==generation)return;if(!round.life)finish();else next(true);},reduced?180:650);
 }
 function finish(abandoned=false) {
@@ -159,11 +159,12 @@ $('answer').addEventListener('compositionend',()=>{composing=false;});
 $('answer').addEventListener('keydown',e=>{if(e.key==='Enter' && (e.isComposing||e.keyCode===229))e.preventDefault();});
 $('quit').onclick=()=>finish(true);$('retry').onclick=()=>start(course);$('choose').onclick=()=>{show('selection');renderCourses();};$('demo').onclick=()=>start('demo');$('retry-save').onclick=()=>saveProgress(!round?.active);
 // Leaving the tab does not grant extra time. Expiry resolves once on return.
-document.addEventListener('visibilitychange',()=>{if(!document.hidden && round?.active && performance.now()-round.started>=LIMIT_MS)settle(round.timeout());});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(unsaved&&!saving&&course!=='demo')void saveProgress();return;}if(round?.active&&performance.now()-round.started>=LIMIT_MS)settle(round.timeout());});
+window.addEventListener('pagehide',()=>{if(unsaved&&!saving&&course!=='demo')void saveProgress();});
 renderCourses();
 loadVocabulary().then(data=>{vocabulary=data;$('data-status').textContent='6コースから選択できます。';renderCourses();}).catch(error=>{$('data-status').textContent=error.message;$('demo').hidden=false;});
 // Load Firebase independently: vocabulary and gameplay remain usable offline.
-import('./word-breaker-store.js?v=2.1.2').then(async module=>{
+import('./word-breaker-store.js?v=2.1.3').then(async module=>{
   user=await module.currentAccount();store=module;
   if(user){$('account').textContent='ログイン中';$('account').href='./index.html';try{bests=await store.readBests();}catch{$('data-status').textContent+=' 自己ベストの読み込みに失敗しました。';}}
   renderCourses();
