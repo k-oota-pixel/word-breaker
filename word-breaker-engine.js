@@ -119,9 +119,15 @@ export class Round {
     this.rewards+=reward;
     return {type:'correct',reward};
   }
-  timeout() {
+  loseLife(type) {
     if(!this.active) return {type:'ignored'};
     this.active=false; this.life--; this.combo=0;
-    return {type:this.life?'timeout':'over'};
+    return {type};
+  }
+  timeout() {
+    return this.loseLife(this.life===1?'over':'timeout');
+  }
+  pass() {
+    return this.loseLife('pass');
   }
 }
