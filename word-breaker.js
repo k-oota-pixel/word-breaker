@@ -1,5 +1,5 @@
 import {mountRecords} from './word-breaker-records.js?v=2.1.2';
-import { GAME_NAME, COURSES, Round, LIMIT_MS, WARNING_MS } from './word-breaker-engine.js?v=1.7';
+import { GAME_NAME, COURSES, Round, LIMIT_MS, WARNING_MS } from './word-breaker-engine.js?v=1.8';
 import { DEMO, loadVocabulary } from './word-breaker-data.js?v=1.5';
 
 const $=id=>document.getElementById(id);
@@ -75,7 +75,7 @@ async function start(id) {
   const current=generation;
   titleWrong=new Set();titleRecovered=false;titleOneLife=0;course=id;round=new Round(id==='demo'?DEMO:vocabulary[id]);oldBest={...best(id)};savedCoins=0;run=null;playerUid=null;
   $('save-status').textContent='';$('retry-save').hidden=true;$('feedback-empty').hidden=false;$('feedback-detail').hidden=true;
-  show('play');updateHUD();$('message').textContent='';$('word').textContent='準備中…';$('answer').value='';$('answer').disabled=false;$('submit').disabled=true;focusAnswer();
+  show('play');updateHUD();$('message').textContent='';$('word').textContent='準備中…';$('answer').value='';$('answer').disabled=false;$('submit').disabled=true;$('pass').disabled=true;focusAnswer();
   // SDK failure must never prevent a guest from playing.
   if(store && id!=='demo') {
     try {user=await store.currentAccount();} catch {user=null;}
@@ -94,7 +94,7 @@ async function start(id) {
 function next(keepInput=false) {
   clearTimeout(wrongReset);
   round.next(performance.now());$('word').textContent=round.current.word;$('word').className='word';$('word').style.opacity='1';$('distance-label').textContent='BREAK BEFORE IMPACT';
-  $('arena').classList.remove('explode');$('burst').replaceChildren();if(!keepInput)$('answer').value='';$('answer').classList.remove('wrong');$('answer').disabled=false;$('submit').disabled=false;if(!keepInput)focusAnswer();
+  $('arena').classList.remove('explode');$('burst').replaceChildren();if(!keepInput)$('answer').value='';$('answer').classList.remove('wrong');$('answer').disabled=false;$('submit').disabled=false;$('pass').disabled=false;if(!keepInput)focusAnswer();
   animation=requestAnimationFrame(tick);
 }
 function tick(now) {
@@ -110,7 +110,7 @@ function feedback(type) {
   $('feedback-empty').hidden=true;$('feedback-detail').hidden=false;
   $('feedback-word').textContent=round.current.word;$('feedback-user').textContent=round.lastAnswer||'（未回答）';
   $('feedback-answers').textContent=round.current.answers.join(' / ');
-  $('feedback-result').textContent=type==='correct'?'✓ 正解':'時間切れ · LIFE −1';
+  $('feedback-result').textContent=type==='correct'?'✓ 正解':type==='pass'?'パス · LIFE −1':'時間切れ · LIFE −1';
 }
 function particles() {
   for(let i=0;i<16;i++){const el=document.createElement('i');el.className='shard';const angle=i*Math.PI/8;el.style.setProperty('--x',`${Math.cos(angle)*(70+i*6)}px`);el.style.setProperty('--y',`${Math.sin(angle)*100}px`);el.style.setProperty('--angle',`${i*23}deg`);$('burst').append(el);}
@@ -127,17 +127,17 @@ function settle(result) {
   if(result.type==='ignored') return;
   if(result.type==='wrong') {titleWrong.add(round.current.word);wrongFeedback();$('message').textContent='もう一度！ 制限時間内なら何回でも答えられます。';$('answer').select();return;}
   if(result.type==='correct'){if(titleWrong.has(round.current.word))titleRecovered=true;if(round.life===1)titleOneLife++;}else titleWrong.add(round.current.word);
-  cancelAnimationFrame(animation);clearTimeout(wrongReset);$('answer').classList.remove('wrong');$('answer').value='';$('submit').disabled=true;
+  cancelAnimationFrame(animation);clearTimeout(wrongReset);$('answer').classList.remove('wrong');$('answer').value='';$('submit').disabled=true;$('pass').disabled=true;
   feedback(result.type);updateHUD();particles();$('word').style.opacity='0';
   if(result.type!=='correct') $('arena').classList.add('explode');
-  $('message').textContent=result.type==='correct'?`✓ 撃破！${result.reward?' コイン獲得条件達成！':''}`:'時間切れ。COMBOが0になりました。';
+  $('message').textContent=result.type==='correct'?`✓ 撃破！${result.reward?' コイン獲得条件達成！':''}`:result.type==='pass'?'パスしました。LIFE −1、COMBOが0になりました。':'時間切れ。COMBOが0になりました。';
   saveProgress();
   const current=generation;transition=setTimeout(()=>{if(current!==generation)return;if(!round.life)finish();else next(true);},reduced?180:650);
 }
 function finish(abandoned=false) {
   if(!round) return;
   cancelAnimationFrame(animation);clearTimeout(transition);clearTimeout(wrongReset);round.active=false;generation++;
-  $('answer').disabled=true;$('submit').disabled=true;composing=false;
+  $('answer').disabled=true;$('submit').disabled=true;$('pass').disabled=true;composing=false;
   $('result-heading').textContent=abandoned?'今回の記録':course==='demo'?'操作体験の結果':'おつかれさま！';
   $('result-score').textContent=round.score;$('result-combo').textContent=round.bestCombo;$('result-coins').textContent=savedCoins;
   // Keep the final timed-out question readable after the play section is hidden.
@@ -151,8 +151,9 @@ function finish(abandoned=false) {
   show('result');$('result').focus();saveProgress(true);
 }
 $('answer-form').addEventListener('submit',e=>{e.preventDefault();if(e.isComposing || composing || !round?.active || !$('answer').value.trim())return;focusAnswer();settle(round.resolve($('answer').value,performance.now()));});
-// Keep the soft keyboard open when the submit button is tapped.
-$('submit').addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'&&document.activeElement===$('answer'))e.preventDefault();});
+// Keep the soft keyboard open when an action button is tapped.
+for(const id of ['submit','pass']) $(id).addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'&&document.activeElement===$('answer'))e.preventDefault();});
+$('pass').onclick=()=>{if(!round?.active)return;settle(round.pass());};
 $('answer').addEventListener('compositionstart',()=>{composing=true;});
 $('answer').addEventListener('compositionend',()=>{composing=false;});
 $('answer').addEventListener('keydown',e=>{if(e.key==='Enter' && (e.isComposing||e.keyCode===229))e.preventDefault();});
