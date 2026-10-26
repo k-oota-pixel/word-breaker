@@ -12,7 +12,7 @@
 <main>
   <header><a href="https://k-oota-pixel.github.io/english-playroom/">← もんすたでぃ</a><a id="account" href="./login.html?return=index.html">ログイン</a></header>
   <div class="eyebrow">ことばで、限界をこわせ。</div>
-  <div class="game-title"><h1 data-game-name>WORD BREAKER</h1><span class="game-version">ver.1.7</span></div>
+  <div class="game-title"><h1 data-game-name>WORD BREAKER</h1><span class="game-version">ver.1.8</span></div>
   <p class="intro">迫る英単語を、日本語で撃破。ひとつの意味がわかればOK。</p>
   <aside id="world-records" class="world-records" aria-labelledby="world-record-title">
     <div class="world-record-heading"><h2 id="world-record-title">🏆 USER RECORD</h2><button id="world-record-refresh" class="secondary" type="button" aria-label="みんなの記録を更新">更新</button></div>
@@ -23,7 +23,7 @@
     <h2 id="course-title">コースを選ぶ</h2>
     <p id="data-status" role="status">語彙データを読み込んでいます…</p>
     <div id="courses" class="courses"></div>
-    <div class="rules"><strong>2 LIFE · 1 WORD = 1 SCORE · ENDLESS</strong><p>1語17秒。終盤は単語が赤く点滅します。誤答は何度でも再入力OK。時間切れでLIFE −1、COMBOは0に戻ります。</p><p>10語撃破で1コイン。以降は累計25・40・55語…と15語撃破ごとに1コイン。ログインすると共通SHOPで使えます。</p></div>
+    <div class="rules"><strong>2 LIFE · 1 WORD = 1 SCORE · ENDLESS</strong><p>1語17秒。終盤は単語が赤く点滅します。誤答は何度でも再入力OK。時間切れ、またはPASSでLIFE −1、COMBOは0に戻ります。</p><p>10語撃破で1コイン。以降は累計25・40・55語…と15語撃破ごとに1コイン。ログインすると共通SHOPで使えます。</p></div>
     <button id="demo" class="secondary" hidden>操作を体験する（サンプル・コイン対象外）</button>
   </section>
   <section id="play" hidden aria-label="ゲーム">
@@ -31,7 +31,7 @@
     <div class="game-layout">
       <div>
         <div id="arena" class="arena"><div class="horizon" aria-hidden="true"></div><div id="word" class="word"></div><div id="burst" class="burst" aria-hidden="true"></div><span id="distance-label" class="distance-label" role="status" aria-live="polite">BREAK BEFORE IMPACT</span></div>
-        <form id="answer-form"><label for="answer">日本語の意味を入力</label><div class="input-row"><input id="answer" autocomplete="off" placeholder="意味をひとつ入力" enterkeyhint="send" maxlength="100"><button id="submit">撃破 ↵</button></div></form>
+        <form id="answer-form"><label for="answer">日本語の意味を入力</label><div class="input-row"><input id="answer" autocomplete="off" placeholder="意味をひとつ入力" enterkeyhint="send" maxlength="100"><button id="submit">撃破 ↵</button><button id="pass" class="secondary" type="button" aria-label="この単語をパスしてLIFEを1減らす">PASS −1♥</button></div></form>
         <p id="message" role="status" aria-live="polite"></p>
       </div>
       <aside class="feedback" aria-labelledby="feedback-title"><details id="previous-feedback" open><summary id="feedback-title">前の解答を見る</summary><p id="feedback-empty">直前の問題をここに表示します。</p><div id="feedback-detail" hidden><strong id="feedback-word"></strong><p id="feedback-result"></p><small>YOUR ANSWER</small><p id="feedback-user"></p><small>ANSWER</small><p id="feedback-answers"></p></div></details></aside>
@@ -42,7 +42,7 @@
     <p id="final-word" class="final-word"></p>
     <dl><dt>模範解答例</dt><dd id="final-answers"></dd><dt>あなたの最後の解答</dt><dd id="final-user"></dd></dl>
   </aside><p id="save-status" role="status"></p><button id="retry-save" class="secondary" hidden>保存を再試行</button><div class="actions"><button id="retry">もう一度</button><button id="choose" class="secondary">コースを選ぶ</button></div></section>
-  <p class="footer">ver1.10.4 · 日本語の表記ゆれ・自然な言い換えに対応 · ブラウザ内で即時判定</p>
+  <p class="footer">ver1.10.5 · 日本語の表記ゆれ・自然な言い換えに対応 · ブラウザ内で即時判定</p>
 </main>
-<script type="module" src="./word-breaker.js?v=2.1.2"></script>
+<script type="module" src="./word-breaker.js?v=2.1.3"></script>
 </body></html>
