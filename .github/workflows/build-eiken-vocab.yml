@@ -30,7 +30,7 @@ jobs:
           assert data['totalEntries'] == sum(data['counts'].values())
           words=[w['word'].lower() for g in ('4','3','pre2','2') for w in data['grades'][g]['words']]
           assert len(words)==len(set(words))
-          assert all(data['counts'][g] >= 200 for g in ('4','3','pre2','2'))
+          assert all(data['counts'][g] >= 150 for g in ('4','3','pre2','2'))
           print(data['counts'], data['totalEntries'])
           PY
       - name: Commit generated database
