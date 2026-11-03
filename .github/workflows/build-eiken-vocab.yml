@@ -1,0 +1,46 @@
+name: Build Eiken vocabulary database
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'build_eiken_vocab.py'
+      - '.github/workflows/build-eiken-vocab.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build database
+        run: python build_eiken_vocab.py
+      - name: Validate database
+        run: |
+          python - <<'PY'
+          import json
+          data=json.load(open('eiken_vocab_master.json',encoding='utf-8'))
+          assert data['totalEntries'] == sum(data['counts'].values())
+          words=[w['word'].lower() for g in ('4','3','pre2','2') for w in data['grades'][g]['words']]
+          assert len(words)==len(set(words))
+          assert all(data['counts'][g] >= 200 for g in ('4','3','pre2','2'))
+          print(data['counts'], data['totalEntries'])
+          PY
+      - name: Commit generated database
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add eiken_vocab_master.json eiken_vocab_master_samples.txt EIKEN_VOCAB_README.md
+          if git diff --cached --quiet; then
+            echo 'No generated changes'
+          else
+            git commit -m 'Generate Eiken vocabulary master'
+            git push
+          fi
