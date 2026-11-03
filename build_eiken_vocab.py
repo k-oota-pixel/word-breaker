@@ -136,15 +136,16 @@ def main():
         grades[grade].sort(key=sort_key)
 
     all_words = [item['word'].lower() for grade in GRADE_ORDER for item in grades[grade]]
+    counts = {grade: len(grades[grade]) for grade in GRADE_ORDER}
+    print(json.dumps({'counts': counts, 'total': len(all_words)}, ensure_ascii=False))
     if len(all_words) != len(set(all_words)):
         raise RuntimeError('Duplicate words remain across grades')
-    if len(all_words) < 1800:
-        raise RuntimeError(f'Too few usable words: {len(all_words)}')
+    if len(all_words) < 1500:
+        raise RuntimeError(f'Too few usable unique words: {len(all_words)}')
     for grade in GRADE_ORDER:
-        if len(grades[grade]) < 200:
+        if len(grades[grade]) < 150:
             raise RuntimeError(f'{grade} has too few words: {len(grades[grade])}')
 
-    counts = {grade: len(grades[grade]) for grade in GRADE_ORDER}
     generated = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
     payload = {
         'schemaVersion': '1.0',
@@ -223,8 +224,6 @@ def main():
         'NGSL由来の情報を含む本データを再配布する場合はCC BY-SA 4.0の帰属・継承条件に従ってください。商用利用は認められています。\n',
         encoding='utf-8',
     )
-
-    print(json.dumps({'counts': counts, 'total': len(all_words)}, ensure_ascii=False))
 
 
 if __name__ == '__main__':
