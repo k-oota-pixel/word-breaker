@@ -1,0 +1,92 @@
+もんすたでぃ独自 英検級別語彙マスター サンプル
+生成: 2026-11-03T06:46:13Z
+総語数: 1669
+4級 618語 / 3級 193語 / 準2級 406語 / 2級 452語
+
+[4級]
+that	あれ・その	basic / NGSL 15
+find	見つける・分かる	basic / NGSL 81
+talk	話す・会話	basic / NGSL 137
+begin	始める・始まる	basic / NGSL 189
+thank	感謝する	basic / NGSL 244
+care	注意・世話	basic / NGSL 313
+eye	目	basic / NGSL 391
+join	参加する・加わる	basic / NGSL 469
+pick	選ぶ・摘む	basic / NGSL 583
+son	息子	basic / NGSL 687
+sleep	眠る・睡眠	basic / NGSL 827
+afternoon	午後	basic / NGSL 948
+corner	角・隅	basic / NGSL 1188
+egg	卵	basic / NGSL 1381
+ear	耳	basic / NGSL 1664
+hunt	狩る・探し求める	basic / NGSL 1998
+moon	月	basic / NGSL 2599
+clever	賢い・利口な	basic
+million	100万・百万	basic
+Wednesday	水曜日	basic
+
+[3級]
+mouse	ネズミ・マウス	junior2 / NGSL 1926
+after	後に・〜の後で	junior3 / NGSL 84
+while	〜する間・一方で	junior3 / NGSL 155
+though	〜だけれども・しかし	junior3 / NGSL 227
+sort	種類・分類する	junior3 / NGSL 316
+either	どちらか・〜もまた〜ない	junior3 / NGSL 371
+certain	確かな・ある	junior3 / NGSL 451
+outside	外側・外で	junior3 / NGSL 491
+realize	気づく・実現する	junior3 / NGSL 554
+pretty	かなり・かわいい	junior3 / NGSL 637
+alone	一人で・単独で	junior3 / NGSL 719
+natural	自然の・当然の	junior3 / NGSL 817
+exercise	運動・練習	junior3 / NGSL 917
+mix	混ぜる・混ざる	junior3 / NGSL 1029
+suit	スーツ・合う	junior3 / NGSL 1122
+neither	どちらも〜ない・どちらでもない	junior3 / NGSL 1216
+beach	浜辺・海岸	junior3 / NGSL 1297
+visitor	訪問者・来客	junior3 / NGSL 1398
+tear	涙・破る	junior3 / NGSL 1470
+lovely	かわいらしい・すてきな	junior3 / NGSL 1600
+
+[準2級]
+row	列・こぐ	junior3 / NGSL 1602
+prize	賞・賞品	junior3 / NGSL 2005
+silent	静かな・無言の	junior3 / NGSL 2474
+awake	目が覚めて・起きている	junior3
+goods	商品・品物	junior3
+pleased	喜んでいる・満足した	junior3
+include	含む	high1 / NGSL 163
+public	公共の・公の	high1 / NGSL 287
+remain	残る・〜のままでいる	high1 / NGSL 374
+describe	説明する・描写する	high1 / NGSL 457
+serve	仕える・提供する	high1 / NGSL 534
+contact	連絡・接触	high1 / NGSL 600
+respect	尊敬・尊重する	high1 / NGSL 681
+achieve	達成する・成し遂げる	high1 / NGSL 746
+task	課題・仕事	high1 / NGSL 854
+maintain	維持する・主張する	high1 / NGSL 943
+aware	気づいている・知っている	high1 / NGSL 1039
+audience	観客・聴衆	high1 / NGSL 1166
+manufacture	製造する	high1 / NGSL 1392
+thick	厚い・太い	high1 / NGSL 2000
+
+[2級]
+species	種・種類	high1 / NGSL 2598
+pause	一時停止する・休止	high2 / NGSL 649
+potential	可能性・潜在的な	high2 / NGSL 830
+independent	独立した・自立した	high2 / NGSL 1006
+display	展示する・表示する	high2 / NGSL 1109
+transport	輸送する・交通	high2 / NGSL 1210
+divide	分ける・割る	high2 / NGSL 1316
+deny	否定する・拒む	high2 / NGSL 1429
+threaten	脅す・脅かす	high2 / NGSL 1521
+import	輸入する・輸入	high2 / NGSL 1613
+compete	競争する	high2 / NGSL 1683
+talent	才能	high2 / NGSL 1790
+educational	教育の・教育的な	high2 / NGSL 1892
+crop	作物	high2 / NGSL 1986
+sink	沈む・流し	high2 / NGSL 2105
+quantity	量	high2 / NGSL 2267
+accomplish	成し遂げる・達成する	high2 / NGSL 2456
+ancestor	祖先	high2
+intelligent	知的な・頭のよい	high2
+wisdom	知恵・賢さ	high2
