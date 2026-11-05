@@ -29,15 +29,18 @@ export function mountRecords(){
   if(pending||document.hidden||!dialog.open||Date.now()-lastAttempt<1000)return;
   pending=true;lastAttempt=Date.now();retry.disabled=true;
   if(!records)status.textContent='みんなの記録を読み込み中…';
+  // Allow one request to survive a Render cold start without extra polls.
+  // AbortController is supported by older iPads where AbortSignal.timeout is not.
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),50000);
   try{
-   const response=await fetch(API,{cache:'no-store',signal:AbortSignal.timeout(20000)});
+   const response=await fetch(API,{cache:'no-store',signal:controller.signal});
    if(!response.ok)throw Error('records unavailable');
    const data=await response.json();
    if(!data?.courses||!COURSES.every(([id])=>Number.isSafeInteger(data.courses[id]?.score)&&data.courses[id].score>=0&&Array.isArray(data.courses[id].petNames)))throw Error('invalid records');
    records=data;render();status.textContent='みんなの最高スコア · ペット名で表示 · 称号を表示';
   }catch{
    status.textContent=records?'更新できませんでした。前回取得した記録を表示しています。':'記録を取得できませんでした。「更新」で再試行できます。';
-  }finally{pending=false;retry.disabled=false;}
+  }finally{clearTimeout(timer);pending=false;retry.disabled=false;}
  }
  retry.addEventListener('click',refresh);
  window.addEventListener('focus',refresh);
