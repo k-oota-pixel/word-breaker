@@ -1,4 +1,4 @@
-import {mountRecords} from './word-breaker-records.js?v=2.1.2';
+import {mountRecords} from './word-breaker-records.js?v=2.1.3';
 import { GAME_NAME, COURSES, Round, LIMIT_MS, WARNING_MS } from './word-breaker-engine.js?v=1.8';
 import { DEMO, loadVocabulary } from './word-breaker-data.js?v=1.5';
 
