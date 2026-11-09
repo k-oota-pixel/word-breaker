@@ -164,7 +164,7 @@ window.addEventListener('pagehide',()=>{if(unsaved&&!saving&&course!=='demo')voi
 renderCourses();
 loadVocabulary().then(data=>{vocabulary=data;$('data-status').textContent='6コースから選択できます。';renderCourses();}).catch(error=>{$('data-status').textContent=error.message;$('demo').hidden=false;});
 // Load Firebase independently: vocabulary and gameplay remain usable offline.
-import('./word-breaker-store.js?v=2.1.3').then(async module=>{
+import('./word-breaker-store.js?v=2.4.50').then(async module=>{
   user=await module.currentAccount();store=module;
   if(user){$('account').textContent='ログイン中';$('account').href='./index.html';try{bests=await store.readBests();}catch{$('data-status').textContent+=' 自己ベストの読み込みに失敗しました。';}}
   renderCourses();
